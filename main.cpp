@@ -1,8 +1,8 @@
-#include <iostream>
-#include ".\include\ChildData.hpp"
 #include <iterator>
 #include <map>
 #include <utility>
+#include ".\include\data.hpp"
+
 
 class SingletonDatabase
 {
@@ -11,8 +11,8 @@ class SingletonDatabase
         SingletonDatabase();
 
     public:
-        std::map<Child, std::string, DataComparator> naughty_nice;
-        std::vector<Letter> recieved_mail;
+        std::map<data::Child, std::string, data::DataComparator> naughty_nice;
+        std::vector<data::Letter> recieved_mail;
 
         static SingletonDatabase *getDatabase();
 };

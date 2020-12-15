@@ -1,8 +1,10 @@
 # Functional:
 * db of inventory, presents, letters
-* populate inventory.dat, presents.dat, letters.dat, cities.dat
+* populate children.dat, inventory.dat, letters.dat, cities.dat
     * letters.dat population works, needs input
-    * inventory.dat, presents.dat, cities.dat awaiting implementation
+    * inventory.dat population implemented, untested, compiles
+    * children.dat, cities.dat awaiting implementation
+    * random generation
 * elf class
     * make presents
         * compare letters to naughty list
@@ -33,5 +35,6 @@
 # Various:
 * destructors, polymorphism(overloading), templates, exceptions
 * mark class, object, constructor, destructor, encapsulation, inheritance, polymorphism, abstract, template, exception
+* add comments
 * separate files
     * Santa & workers
