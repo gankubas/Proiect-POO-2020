@@ -1,5 +1,4 @@
-#include <utility>
-#include ".\include\workers.hpp" // also <iostream>, <string>, <vector>, <iterator>, <algorithm>, <map>
+#include ".\include\workers.hpp" // also <iostream>, <string>, <vector>, <iterator>, <algorithm>, <map>, <utility>, <tuple>, <climits>
 
 // TODO finish declaration
 // class SingletonDatabase
@@ -10,7 +9,7 @@
 //
 //     public:
 //         std::map<data::Child, std::string, data::DataComparator> naughty_nice;
-//         std::vector<data::Letter> recieved_mail;
+//         std::vector<data::Letter> received_mail;
 //
 //         static SingletonDatabase *getDatabase();
 //

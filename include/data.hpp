@@ -6,6 +6,55 @@
 
 namespace data // used in case of overloaded functionality and for marking items from this header file
 {
+//-------------------------------Inventory Items--------------------------------
+    class Toy
+    {
+        private:
+            std::string name;
+            int amount;
+            double price;
+
+        public:
+            Toy(std::string new_name, int new_amount, double new_price);
+
+            std::string getName() { return this->name; }
+            int getAmount() { return this->amount; }
+            double getPrice() { return this->price; }
+
+            void removeFromInventory();
+            double findItemCost(std::string item);
+
+            friend std::istream &operator >>(std::istream &in, Toy &t); // used in populate.cpp by populateInventory()
+
+            friend class Present; // for adding names and prices
+    };
+
+    Toy::Toy(std::string new_name = "", int new_amount = -1, double new_price = -1.0)
+    {
+        this->name = new_name;
+        this->amount = new_amount;
+        this->price = new_price;
+    }
+
+    void Toy::removeFromInventory()
+    {
+        this->amount--;
+    }
+
+    double Toy::findItemCost(std::string item)
+    {
+        return item == this->name ? this->price : -1.0;
+    }
+
+    std::istream &operator >>(std::istream &in, Toy &t)
+    {
+        std::cout << "Name Amount Price:\n";
+
+        in >> t.name >> t.amount >> t.price;
+
+        return in;
+    }
+
 //---------------------------Child & Child by-products--------------------------
     class Child
     {
@@ -50,8 +99,6 @@ namespace data // used in case of overloaded functionality and for marking items
             bool operator ==(const Child &c);
 
             friend std::istream &operator >>(std::istream &in, Letter &l); // used in populate.cpp by populateLetters()
-
-            friend class Present; // copy constructor requires acces to private attributes of Letter
     };
 
     Letter::Letter(std::string new_name = "", std::string new_surname = "", std::string new_city = "", int new_age = -1, std::string new_colour = "")
@@ -96,36 +143,52 @@ namespace data // used in case of overloaded functionality and for marking items
         return in;
     }
 
-    class Present : public Child // maybe redundant due to similarity with Letter
+    class Present : public Child
     {
         private:
             std::string colour;
             std::vector<std::string> items;
+            double cost;
 
         public:
-            Present(const Letter &l);
+            Present(std::string new_name, std::string new_surname, std::string new_city, int new_age);
 
             std::string getColour() { return this->colour; }
             std::vector<std::string> getItems() { return this->items; }
+            double getCost() { return this->cost; }
 
-            void addToItems(std::string new_item);
+            void setColour(std::string new_colour) { this->colour = new_colour; }
+
+            void addToItems(Toy new_item);
+
+            void operator =(const Present &copy);
     };
 
-    Present::Present(const Letter &l)
+    Present::Present(std::string new_name = "", std::string new_surname = "", std::string new_city = "", int new_age = -1)
+        : Child{new_name, new_surname, new_city, new_age}
     {
-        this->name = l.name;
-        this->surname = l.surname;
-        this->city = l.city;
-        this->age = l.age;
-        this->colour = l.colour;
+        this->colour = "";
+        this->cost = 0.0;
     }
 
-    void Present::addToItems(std::string new_item)
+    void Present::addToItems(Toy new_item)
     {
-        this->items.push_back(new_item);
+        this->items.push_back(new_item.name);
+        this->cost += new_item.price;
     }
 
-    class DataComparator // used by std::map when Child is key
+    void Present::operator =(const Present &copy)
+    {
+        this->name = copy.name;
+        this->surname = copy.surname;
+        this->city = copy.city;
+        this->age = copy.age;
+        this->colour = copy.colour;
+        this->items = copy.items;
+        this->cost = copy.cost;
+    }
+
+    class DataComparator // functor used by std::map when Child is key
     {
         public:
             bool operator ()(const Child &c1, const Child &c2)
@@ -138,54 +201,7 @@ namespace data // used in case of overloaded functionality and for marking items
             }
     };
 
-//-------------------------------Inventory Items--------------------------------
-    class Toy
-    {
-        private:
-            std::string name;
-            int amount;
-            double price;
-
-        public:
-            Toy(std::string new_name, int new_amount, double new_price);
-
-            std::string getName() { return this->name; }
-            int getAmount() { return this->amount; }
-            double getPrice() { return this->price; }
-
-            void removeFromInventory();
-            double findItem(std::string item);
-
-            friend std::istream &operator >>(std::istream &in, Toy &t); // used in populate.cpp by populateInventory()
-    };
-
-    Toy::Toy(std::string new_name = "", int new_amount = -1, double new_price = -1.0)
-    {
-        this->name = new_name;
-        this->amount = new_amount;
-        this->price = new_price;
-    }
-
-    void Toy::removeFromInventory()
-    {
-        this->amount--;
-    }
-
-    double Toy::findItem(std::string item)
-    {
-        return item == this->name ? this->price : -1.0;
-    }
-
-    std::istream &operator >>(std::istream &in, Toy &t)
-    {
-        std::cout << "Name Amount Price:\n";
-
-        in >> t.name >> t.amount >> t.price;
-
-        return in;
-    }
-
-//----------------------------------City Class----------------------------------
+//-----------------------------City & Road Classes------------------------------
     struct CityNode
     {
         public:
