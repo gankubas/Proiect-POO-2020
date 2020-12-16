@@ -31,6 +31,7 @@ namespace workers // used in case of overloaded functionality and for marking it
 
             std::vector<data::Present> getPackagedGifts() { return this->packaged_gifts; }
             std::map<std::string, int> getPackages() { return this->packages; }
+            int getUsedCoal() { return this->used_coal; }
 
             void setGifts(std::vector<std::tuple<data::Present, std::string, std::string>> new_gifts) { this->gifts = new_gifts; }
 
@@ -90,8 +91,38 @@ namespace workers // used in case of overloaded functionality and for marking it
 //------------------------------Ms Santa Class----------------------------------
     class MsSanta
     {
+        private:
+            static data::Toy candies;
+            int num_of_candy;
+            int num_of_coal;
+            std::vector<data::Present> gifts;
+            // TODO path variable from Santa class
 
+            // only Ms Santa needs access to present modifier method
+            void addCandies();
+
+        public:
+            void setCoals(int coals) { this->num_of_coal = coals; }
+            void setCandies(int candies) { this->num_of_candy = candies; }
+            void setGifts(std::vector<data::Present> new_gifts) { this->gifts = new_gifts; }
+
+            double calculateExtraBudget();
     };
+
+    data::Toy MsSanta::candies("candy", INT_MAX, 1.0);
+
+    void MsSanta::addCandies()
+    {
+        for(data::Present gift : this->gifts)
+        {
+            gift.addToItems(this->candies);
+        }
+    }
+
+    double MsSanta::calculateExtraBudget()
+    {
+        return this->num_of_coal * 0.5 + this->num_of_candy * 1.0;
+    }
 
 //-------------------------------Santa Class------------------------------------
     class Santa
