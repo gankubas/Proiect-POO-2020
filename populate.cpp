@@ -1,5 +1,5 @@
 #include <fstream>
-#include ".\include\data.hpp"
+#include ".\include\data.hpp" // also <iostream>, <string>, <vector>, <iterator>, <algorithm>
 
 void populateLetters()
 {
@@ -76,6 +76,11 @@ void populateInventory()
     }
 }
 
+void populateChildren()
+{
+
+}
+
 void populateCities()
 {
 
@@ -85,6 +90,7 @@ int main()
 {
     populateLetters();
     populateInventory();
+    populateChildrea();
     populateCities();
 
     return 0;

@@ -1,9 +1,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iterator>
+#include <algorithm> // for std::find_if
 
 namespace data // used in case of overloaded functionality and for marking items from this header file
 {
+//---------------------------Child & Child by-products--------------------------
     class Child
     {
         protected:
@@ -135,6 +138,7 @@ namespace data // used in case of overloaded functionality and for marking items
             }
     };
 
+//-------------------------------Inventory Items--------------------------------
     class Toy
     {
         private:
@@ -179,5 +183,77 @@ namespace data // used in case of overloaded functionality and for marking items
         in >> t.name >> t.amount >> t.price;
 
         return in;
+    }
+
+//----------------------------------City Class----------------------------------
+    struct CityNode
+    {
+        public:
+            std::string name;
+            double distance;
+            CityNode *path;
+
+            CityNode(std::string new_name, double new_distance);
+    };
+
+    CityNode::CityNode(std::string new_name = "", double new_distance = 0)
+    {
+        this->name = new_name;
+        this->distance = new_distance;
+        this->path = nullptr;
+    }
+
+    class RoadGraph
+    {
+        private:
+            static RoadGraph *start;
+            RoadGraph(std::vector<std::string> new_start);
+
+        public:
+            int num_of_cities;
+            std::vector<CityNode *> starting_city;
+            std::vector<bool> isVisited;
+
+            static RoadGraph *makeRoads(std::vector<std::string> new_start);
+
+            void addPath(std::string start, std::string stop, double length);
+    };
+
+    RoadGraph *RoadGraph::start = nullptr;
+
+    RoadGraph::RoadGraph(std::vector<std::string> new_start)
+    {
+        this->num_of_cities = new_start.size();
+
+        for(int i = 0; i < new_start.size(); i++)
+        {
+            this->starting_city.push_back(new CityNode(new_start.at(i)));
+        }
+    }
+
+    RoadGraph *RoadGraph::makeRoads(std::vector<std::string> new_start = {})
+    {
+        if(start == nullptr)
+        {
+            start = new RoadGraph(new_start);
+        }
+
+        return start;
+    }
+
+    void RoadGraph::addPath(std::string start, std::string stop, double length)
+    {
+        std::vector<CityNode *>::iterator start_pos = std::find_if(this->starting_city.begin(), this->starting_city.end(), [&start](const CityNode *starter)
+                                                {
+                                                    return starter->name == start;
+                                                });
+
+        CityNode *aux = this->starting_city.at(start_pos - this->starting_city.begin());
+        while(aux->path != nullptr)
+        {
+            aux = aux->path;
+        }
+
+        aux->path = new CityNode(stop, length);
     }
 }
