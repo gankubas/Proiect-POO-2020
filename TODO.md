@@ -1,15 +1,21 @@
 # Functional:
-- [ ] db of inventory, children, letters, cities
+- [ ] db of inventory, nnlist, letters, cities
 - [ ] populate children.dat, inventory.dat, letters.dat, cities.dat
     - [ ] letters.dat population works, needs input
     - [ ] inventory.dat population implemented, untested, compiles
-    - [ ] children.dat, cities.dat awaiting implementation
+    - [ ] nnlist.dat, letters.dat, cities.dat awaiting implementation
     - [ ] random generation
-        - [ ] ensure letters have an associated child
+        - [x] make data generation file
+        - [x] generate inventory, wishlist, children
+        - [ ] generate road graph
+        - [ ] make letters and naughty list
+            - [ ] ensure letters have an associated child
 - [ ] elf class
     - [ ] make presents
         - [ ] compare letters to naughty list
-        - [ ] greedy wishlist
+        - [ ] compare wishlist to inventory
+            - [ ] greedy wishlist
+        - [ ] add default gifts
     - [ ] send presents to troll
     - [ ] send number of children to ms santa
     - [ ] send cities to santa
@@ -29,7 +35,8 @@
 - [ ] santa class
     - [ ] get cities from elves
     - [ ] find shortest path
-        - [ ] make weighted graph
+        - [ ] get weighted graph
+            - [ ] in singleton database
         - [ ] travelling salesman algorithm
             - [ ] just brute force...
             - [ ] dynamic?
@@ -37,11 +44,11 @@
 - [ ] display path and length
 
 # Various:
-- [ ] destructors, polymorphism(overloading), abstraction, templates, exceptions
+- [ ] destructors, abstraction
 - [ ] mark class, object, constructor, destructor, encapsulation, inheritance, polymorphism, abstraction, template, exception
 - [ ] add comments
 - [ ] define coding style
 - [ ] remove useless getters
 - [x] separate files
     - [x] Data
-    - [x] Santa & workers
+    - [x] Workers

@@ -1,20 +1,36 @@
 #include ".\include\workers.hpp" // also <iostream>, <string>, <vector>, <iterator>, <algorithm>, <map>, <utility>, <tuple>, <climits>
 
-// TODO finish declaration
-// class SingletonDatabase
-// {
-//     private:
-//         static SingletonDatabase *sdb;
-//         SingletonDatabase();
-//
-//     public:
-//         std::map<data::Child, std::string, data::DataComparator> naughty_nice;
-//         std::vector<data::Letter> received_mail;
-//
-//         static SingletonDatabase *getDatabase();
-//
-//         void readDatabase();
-// };
+class SingletonDatabase
+{
+    private:
+        static SingletonDatabase *sdb;
+        SingletonDatabase();
+
+    public:
+        std::map<data::Child, std::string, data::DataComparator> naughty_nice;
+        std::vector<data::Letter> received_mail;
+        std::vector<data::Toy> current_inventory;
+        data::RoadGraph travelling_paths;
+
+        static SingletonDatabase *getDatabase();
+};
+
+SingletonDatabase *SingletonDatabase::sdb = nullptr;
+
+SingletonDatabase::SingletonDatabase()
+{
+    // TODO read from files
+}
+
+SingletonDatabase *SingletonDatabase::getDatabase()
+{
+    if(this->sdb == nullptr)
+    {
+        this->sdb = new SingletonDatabase;
+    }
+
+    return this->sdb;
+}
 
 int main(void)
 {

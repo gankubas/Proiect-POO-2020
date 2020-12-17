@@ -1,0 +1,24 @@
+category,inventory
+Toy Car,Action Figure,Teddy Bear,Lego(TM),Play-Doh(TM),Doll,Matryoshka,Toy Robot,D&D Book,Nerf(TM),Jigsaw Puzzle,Rubik's Cube,Yo-Yo,Book,Clothes,Sweets
+60.13,5.21,8.00,98.98,10.00,6.15,3.86,74.03,49.99,35.73,42.51,4.25,1.75,15.94,83.43,12.08
+category,wishlist
+Toy Car,Action Figure,Teddy Bear,Lego(TM),Play-Doh(TM),Doll,Matryoshka,Toy Robot,Model Plane,Model Train,D&D Book,Nerf(TM),Jigsaw Puzzle,Rubik's Cube,Yo-Yo,PS5,XBox Series X,Nintendo Switch(TM),Book,Laptop,Mobile Phone,Clothes,Sweets
+category,boyname
+Angel,Cesar,Domingo,Oscar,Martin,Nico,Alonso,Juan,Manuel,Lucas,David,Carlos,Julio,Jesus,Pablo,Antonio
+category,girlname
+Nuria,Maria,Ana,Lucia,Sandra,Juanita,Martina,Paula,Esperanza,Olivia,Yolanda,Alessandra,Jimena,Luna,Camila,Elisa
+category,surname
+Belda,Lacasa,Cespedes,Ciceron,Velazquez,Carballo,Lopez,Villacres,Leguizamo,Saez,Espinar,Seco,Davalos,Campos,Tejedor,Alcocer,Maroto,Cortez,Aleman,Ocampo,Pomar,Tamayo,Fonseca
+category,city
+Ciudad de Mexico,Ecatepec,Guadalajara,Puebla de Zaragoza,Tijuana,Ciudad Juarez,Leon,Zapopan,Monterrey,Nezahualcoyotl
+9432.42,9407.23,9442.28,9440.81,8558.37,8369.24,9340.79,9438.71,8816.55,9403.09
+0.00,26.25,461.23,107.28,2301.74,1552.93,325.50,467.15,704.29,32.74
+26,25,0.00,469.73,105.07,2298.53,1540.92,326.47,475.44,686.03,8.27
+461.23,469.73,0.00,568.12,1892.04,1268.64,179.83,6.97,636.52,477.17
+107.28,105.07,568.12,0.00,2403.30,1637.08,431.00,574.10,768.38,99.81
+2301.74,2298.53,1892.04,2403.30,0.00,996.73,1979.18,1885.07,1792.97,2303.51
+1552.93,1540.92,1268.64,1637.08,996.73,0.00,1272.90,1262.46,903.95,1543.33
+325.50,326.47,179.83,431.00,1979.18,1272.90,0.00,182.86,525.15,332.67
+467.15,475.44,6.97,574.10,1885.07,1262.46,182.86,0.00,634.13,482.85
+704.23,686.03,636.52,768.38,1792.97,903.95,525.15,634.13,0.00,686.12
+32.74,8.27,477.17,99.81,2303.51,1543.33,332.67,482.85,686.12,0.00
