@@ -4,7 +4,7 @@
 #include <ctime> // for time(0) seed
 #include ".\include\data.hpp" // also <iostream>, <string>, <vector>, <iterator>, <algorithm>
 
-template <type_t>
+template <typename type_t>
 type_t getRandomElement(std::vector<type_t> collection)
 {
     return collection.at(std::rand() % collection.size() + 1);
@@ -27,13 +27,13 @@ class RandomGenerator
         std::vector<std::vector<double>> travelling_distances; // all inter-city distances
             // ^ matrice triunghiulara?
 
-        RandomGenerator *getGenerator();
+        static RandomGenerator *getGenerator();
 
         std::vector<data::Toy> getRInventory();
         std::vector<std::string> getRWishlist();
         data::RoadGraph getRCity();
-        std::vector<data::Child> getRChild();
-}
+        data::Child getRChild();
+};
 
 RandomGenerator *RandomGenerator::rg = nullptr;
 
@@ -69,13 +69,14 @@ RandomGenerator::RandomGenerator()
                 else if(aux == "girlname") to_variable = 'g';
                 else if(aux == "surname") to_variable = 's';
                 else if(aux == "city") to_variable = 'c';
-                else throw "Unexpected data type."
+                else throw "Unexpected data type.";
             }
             else
             {
                 switch(to_variable)
                 {
                     case 'i':
+                    {
                         this->inventory_gifts.push_back(aux);
                         while(std::getline(sin, aux, ','))
                         {
@@ -91,8 +92,10 @@ RandomGenerator::RandomGenerator()
                         }
 
                         break;
+                    }
 
                     case 'w':
+                    {
                         this->wishlist_gifts.push_back(aux);
                         while(std::getline(sin, aux, ','))
                         {
@@ -100,8 +103,10 @@ RandomGenerator::RandomGenerator()
                         }
 
                         break;
+                    }
 
                     case 'b':
+                    {
                         this->boy_names.push_back(aux);
                         while(std::getline(sin, aux, ','))
                         {
@@ -109,8 +114,10 @@ RandomGenerator::RandomGenerator()
                         }
 
                         break;
+                    }
 
                     case 'g':
+                    {
                         this->girl_names.push_back(aux);
                         while(std::getline(sin, aux, ','))
                         {
@@ -118,8 +125,10 @@ RandomGenerator::RandomGenerator()
                         }
 
                         break;
+                    }
 
                     case 's':
+                    {
                         this->children_surnames.push_back(aux);
                         while(std::getline(sin, aux, ','))
                         {
@@ -127,9 +136,10 @@ RandomGenerator::RandomGenerator()
                         }
 
                         break;
+                    }
 
                     case 'c':
-                        this->mexican_cities.push_back();
+                    {
                         this->mexican_cities.push_back(aux);
                         while(std::getline(sin, aux, ','))
                         {
@@ -138,7 +148,7 @@ RandomGenerator::RandomGenerator()
 
                         while(std::getline(fin, aux))
                         {
-                            std::istringstream temp_sstream(aux);
+                            std::istringstream temp(aux);
                             std::vector<double> temp_vector;
 
                             while(std::getline(temp, aux, ','))
@@ -150,9 +160,10 @@ RandomGenerator::RandomGenerator()
                         }
 
                         break;
+                    }
 
                     default:
-                        throw "This shouldn't have happened."
+                        throw "This shouldn't have happened.";
                 }
             }
         }
@@ -163,14 +174,14 @@ RandomGenerator::RandomGenerator()
     }
 }
 
-RandomGenerator *RandomGenerator::getgenerator()
+RandomGenerator *RandomGenerator::getGenerator()
 {
-    if(this->rg == nullptr)
+    if(rg == nullptr)
     {
         rg = new RandomGenerator;
     }
 
-    return this->rg;
+    return rg;
 }
 
 std::vector<data::Toy> RandomGenerator::getRInventory()
@@ -182,7 +193,7 @@ std::vector<data::Toy> RandomGenerator::getRInventory()
         if(std::rand() % 20) // 5% chance of item from database to be missing from inventory
         {
             // add 1-6 toys to inventory
-            data::Toy temp(this->inventory_gifts.at(i), std::rand() % 6 + 1, this->inventory_prices.at(i))
+            data::Toy temp(this->inventory_gifts.at(i), std::rand() % 6 + 1, this->inventory_prices.at(i));
 
             new_inventory.push_back(temp);
         }
@@ -206,12 +217,12 @@ std::vector<std::string> RandomGenerator::getRWishlist()
     return new_wishlist;
 }
 
-data::RoadGraph RandomGenerator::getRCity()
-{
-    // TODO
-}
+// data::RoadGraph RandomGenerator::getRCity()
+// {
+//     // TODO
+// }
 
-data::Child>RandomGenerator::getRChild()
+data::Child RandomGenerator::getRChild()
 {
     std::string name;
 
@@ -233,7 +244,7 @@ data::Child>RandomGenerator::getRChild()
     return new_child;
 }
 
-void populateLetters()
+std::vector<data::Child> populateLetters(RandomGenerator *gen)
 {
     std::ofstream fout;
 
@@ -246,20 +257,41 @@ void populateLetters()
             throw "File cannot open.";
         }
 
-        std::vector<data::Letter> children;
-        data::Letter kid;
+        std::vector<data::Letter> letters;
+        std::vector<data::Child> children;
 
-        for(int i = 0; i < 50; i++)
+        for(int i = 0; i < std::rand() % 5 + 5; i++) // generate 5-10 letters
         {
-            std::cin >> kid;
+            data::Child new_child = gen->getRChild();
+            data::Letter new_letter(new_child);
 
-            children.push_back(kid);
+            bool isBoy = false;
+            for(std::string check_boy : gen->boy_names)
+            {
+                if(check_boy == new_child.getName())
+                {
+                    isBoy = true;
+                    break;
+                }
+            }
+
+            if(isBoy)
+            {
+                new_letter.setColour("blue");
+            }
+            else
+            {
+                new_letter.setColour("pink");
+            }
+
+            letters.push_back(new_letter);
+            children.push_back(new_child);
         }
 
-        fout.write(reinterpret_cast<char *>(&children), sizeof(children));
+        fout.write(reinterpret_cast<char *>(&letters), sizeof(letters));
 
         fout.close();
-
+        return children;
         // if(!fin.is_open())
         // {
         //     throw "File cannot open.";
@@ -275,7 +307,7 @@ void populateLetters()
     }
 }
 
-void populateInventory()
+void populateInventory(RandomGenerator *gen)
 {
     std::ofstream fout;
 
@@ -288,15 +320,7 @@ void populateInventory()
             throw "File cannot open.";
         }
 
-        std::vector<data::Toy> inventory;
-        data::Toy item;
-
-        for(int i = 0; i < 50; i++)
-        {
-            std::cin >> item;
-
-            inventory.push_back(item);
-        }
+        std::vector<data::Toy> inventory = gen->getRInventory();
 
         fout.write(reinterpret_cast<char *>(&inventory), sizeof(inventory));
 
@@ -308,14 +332,48 @@ void populateInventory()
     }
 }
 
-void populateChildren()
+void populateList(RandomGenerator *gen)
 {
+    std::ofstream fout;
 
+    try
+    {
+        fout.open(".\\data\\List.dat");
+
+        if(!fout.is_open())
+        {
+            throw "File cannot open.";
+        }
+
+        std::vector<data::Child> children = ::populateLetters(gen);
+        std::vector<std::string> naughtiness;
+
+        for(int i = 0; i < children.size(); i++)
+        {
+            if(std::rand() % 10) // 10% of children are naughty
+            {
+                naughtiness.push_back("naughty");
+            }
+            else
+            {
+                naughtiness.push_back("nice");
+            }
+        }
+
+        fout.write(reinterpret_cast<char *>(&children), sizeof(children));
+        fout.write(reinterpret_cast<char *>(&naughtiness), sizeof(naughtiness));
+
+        fout.close();
+    }
+    catch(const char *err)
+    {
+        throw;
+    }
 }
 
-void populateCities()
+void populateCities(RandomGenerator *gen)
 {
-
+    // TODO
 }
 
 int main()
@@ -324,11 +382,10 @@ int main()
 
     try
     {
-        RandomGenerator randgen = RandomGenerator::getGenerator();
-        populateLetters();
-        populateInventory();
-        populateChildrea();
-        populateCities();
+        RandomGenerator *randgen = RandomGenerator::getGenerator();
+        ::populateInventory(randgen);
+        ::populateList(randgen); // also populateLetters()
+        // ::populateCities(randgen);
     }
     catch(const char *err)
     {

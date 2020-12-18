@@ -25,6 +25,8 @@ namespace data // used in case of overloaded functionality and for marking items
             double findItemCost(std::string item);
 
             friend std::istream &operator >>(std::istream &in, Toy &t); // used in populate.cpp by populateInventory()
+            // seems to work even though it's declared inside a namespace?
+                // TODO look up i/o operator overloading in custom namespaces
 
             friend class Present; // for adding names and prices
     };
@@ -70,8 +72,11 @@ namespace data // used in case of overloaded functionality and for marking items
             std::string getCity() { return this->city; }
             int getAge() { return this->age; }
 
+            void operator =(const Child &copy); // used by Child and Letter in ::populateLetters() in populate.cpp
+
             friend class DataComparator;
-            friend class Letter; // operator == requires acces to protected attributes of Child
+            friend class Letter; // operator == requires acces to protected attributes of another Child
+                                    // unusre if child class has access to private members of parent-type objects
     };
 
     Child::Child(std::string new_name = "", std::string new_surname = "", std::string new_city = "", int new_age = -1)
@@ -82,6 +87,14 @@ namespace data // used in case of overloaded functionality and for marking items
         this->age = new_age;
     }
 
+    void Child::operator =(const Child &copy)
+    {
+        this->name = copy.name;
+        this->surname = copy.surname;
+        this->city = copy.city;
+        this->age = copy.age;
+    }
+
     class Letter : public Child
     {
         private:
@@ -90,13 +103,15 @@ namespace data // used in case of overloaded functionality and for marking items
 
         public:
             Letter(std::string new_name, std::string new_surname, std::string new_city, int new_age, std::string new_colour);
+            Letter(const Child &copy);
 
             std::string getColour() { return this->colour; }
             std::vector<std::string> getWishlist() { return this->wishlist; }
 
-            void addToWishlist(std::string new_item);
+            void setWishlist(std::vector<std::string> new_wishlist) { this->wishlist = new_wishlist; }
+            void setColour(std::string new_colour) { this->colour = new_colour; }
 
-            bool operator ==(const Child &c);
+            bool operator ==(const Child &c); // TODO remove if unused
 
             friend std::istream &operator >>(std::istream &in, Letter &l); // used in populate.cpp by populateLetters()
     };
@@ -107,9 +122,12 @@ namespace data // used in case of overloaded functionality and for marking items
         this->colour = new_colour;
     }
 
-    void Letter::addToWishlist(std::string new_item)
+    Letter::Letter(const Child &copy)
     {
-        this->wishlist.push_back(new_item);
+        this->name = copy.name;
+        this->surname = copy.surname;
+        this->city = copy.city;
+        this->age = copy.age;
     }
 
     bool Letter::operator ==(const Child &c)
@@ -161,7 +179,7 @@ namespace data // used in case of overloaded functionality and for marking items
 
             void addToItems(Toy new_item);
 
-            void operator =(const Present &copy);
+            void operator =(const Present &copy); // used in workers::MsSanta::setGifts()
     };
 
     Present::Present(std::string new_name = "", std::string new_surname = "", std::string new_city = "", int new_age = -1)

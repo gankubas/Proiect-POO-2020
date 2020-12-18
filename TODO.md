@@ -1,15 +1,15 @@
 # Functional:
-- [ ] db of inventory, nnlist, letters, cities
-- [ ] populate children.dat, inventory.dat, letters.dat, cities.dat
-    - [ ] letters.dat population works, needs input
-    - [ ] inventory.dat population implemented, untested, compiles
-    - [ ] nnlist.dat, letters.dat, cities.dat awaiting implementation
+- [ ] db of inventory, list, letters, cities
+- [ ] populate list.dat, inventory.dat, letters.dat, cities.dat
+    - [x] list.dat, letters.dat, inventory.dat population compiles, runs
+        - [ ] check file contents
+    - [ ] cities.dat awaiting implementation
     - [ ] random generation
         - [x] make data generation file
         - [x] generate inventory, wishlist, children
         - [ ] generate road graph
-        - [ ] make letters and naughty list
-            - [ ] ensure letters have an associated child
+        - [x] make letters and naughty list
+            - [x] ensure letters have an associated child
 - [ ] elf class
     - [ ] make presents
         - [ ] compare letters to naughty list
