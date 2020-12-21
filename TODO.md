@@ -1,15 +1,19 @@
 # Functional:
-- [ ] db of inventory, list, letters, cities
-- [ ] populate list.dat, inventory.dat, letters.dat, cities.dat
-    - [x] list.dat, letters.dat, inventory.dat population compiles, runs
-        - [ ] check file contents
-    - [ ] cities.dat awaiting implementation
-    - [ ] random generation
-        - [x] make data generation file
-        - [x] generate inventory, wishlist, children
-        - [ ] generate road graph
-        - [x] make letters and naughty list
-            - [x] ensure letters have an associated child
+- [x] db of inventory, list, letters, cities
+    - [x] populate list.dat, inventory.dat, letters.dat, cities.dat
+        - [x] compiles, runs
+            - [x] check file contents
+        - [x] random generation
+            - [x] make data generation file
+            - [x] generate inventory
+            - [x] generate wishlist
+            - [x] generate list
+            - [x] generate road graph
+                - [x] ensure children have an associated city
+            - [x] make letters and naughty list
+                - [x] ensure letters have an associated child
+    - [x] read from files to singleton database   
+    - [x] select optimal generations for default example
 - [ ] elf class
     - [ ] make presents
         - [ ] compare letters to naughty list
@@ -19,11 +23,14 @@
     - [ ] send presents to troll
     - [ ] send number of children to ms santa
     - [ ] send cities to santa
+    - [ ] compiles, runs
+        - [ ] tested
 - [ ] print presents/child
 - [ ] troll class
     - [x] add coals
     - [x] send number of coals to ms santa
-    - [ ] finished, untested, compiles
+    - [x] compiles, runs
+        - [ ] tested
 - [ ] print boy & girl package
 - [ ] ms santa class
     - [x] get candy from elves
@@ -31,6 +38,8 @@
     - [x] make candy
     - [x] calculate extra budget
     - [ ] get path from santa
+    - [ ] compiles, runs
+        - [ ] tested
 - [ ] print total sum
 - [ ] santa class
     - [ ] get cities from elves
@@ -41,10 +50,12 @@
             - [ ] just brute force...
             - [ ] dynamic?
     - [ ] send path to ms claus
+    - [ ] compiles, runs
+        - [ ] tested
 - [ ] display path and length
 
 # Various:
-- [ ] destructors, abstraction
+- [ ] abstraction
 - [ ] mark class, object, constructor, destructor, encapsulation, inheritance, polymorphism, abstraction, template, exception
 - [ ] add comments
 - [ ] define coding style

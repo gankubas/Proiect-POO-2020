@@ -24,11 +24,9 @@ namespace data // used in case of overloaded functionality and for marking items
             void removeFromInventory();
             double findItemCost(std::string item);
 
-            friend std::istream &operator >>(std::istream &in, Toy &t); // used in populate.cpp by populateInventory()
-            // seems to work even though it's declared inside a namespace?
-                // TODO look up i/o operator overloading in custom namespaces
-
             friend class Present; // for adding names and prices
+
+            friend std::ostream &operator <<(std::ostream &out, const Toy &t);
     };
 
     Toy::Toy(std::string new_name = "", int new_amount = -1, double new_price = -1.0)
@@ -48,13 +46,11 @@ namespace data // used in case of overloaded functionality and for marking items
         return item == this->name ? this->price : -1.0;
     }
 
-    std::istream &operator >>(std::istream &in, Toy &t)
+    std::ostream &operator <<(std::ostream &out, const Toy &t)
     {
-        std::cout << "Name Amount Price:\n";
+        out << t.name << "," << t.amount << "," << t.price << "\n";
 
-        in >> t.name >> t.amount >> t.price;
-
-        return in;
+        return out;
     }
 
 //---------------------------Child & Child by-products--------------------------
@@ -77,6 +73,8 @@ namespace data // used in case of overloaded functionality and for marking items
             friend class DataComparator;
             friend class Letter; // operator == requires acces to protected attributes of another Child
                                     // unusre if child class has access to private members of parent-type objects
+
+            friend std::ostream &operator <<(std::ostream &out, const Child &c);
     };
 
     Child::Child(std::string new_name = "", std::string new_surname = "", std::string new_city = "", int new_age = -1)
@@ -95,6 +93,13 @@ namespace data // used in case of overloaded functionality and for marking items
         this->age = copy.age;
     }
 
+    std::ostream &operator <<(std::ostream &out, const Child &c)
+    {
+        out << c.name << "," << c.surname << "," << c.city << "," << c.age;
+
+        return out;
+    }
+
     class Letter : public Child
     {
         private:
@@ -105,6 +110,8 @@ namespace data // used in case of overloaded functionality and for marking items
             Letter(std::string new_name, std::string new_surname, std::string new_city, int new_age, std::string new_colour);
             Letter(const Child &copy);
 
+            ~Letter();
+
             std::string getColour() { return this->colour; }
             std::vector<std::string> getWishlist() { return this->wishlist; }
 
@@ -113,7 +120,7 @@ namespace data // used in case of overloaded functionality and for marking items
 
             bool operator ==(const Child &c); // TODO remove if unused
 
-            friend std::istream &operator >>(std::istream &in, Letter &l); // used in populate.cpp by populateLetters()
+            friend std::ostream &operator <<(std::ostream &out, const Letter &l);
     };
 
     Letter::Letter(std::string new_name = "", std::string new_surname = "", std::string new_city = "", int new_age = -1, std::string new_colour = "")
@@ -130,6 +137,11 @@ namespace data // used in case of overloaded functionality and for marking items
         this->age = copy.age;
     }
 
+    Letter::~Letter()
+    {
+        this->wishlist.clear();
+    }
+
     bool Letter::operator ==(const Child &c)
     {
         if(this->name == c.name
@@ -139,26 +151,17 @@ namespace data // used in case of overloaded functionality and for marking items
         else return false;
     }
 
-    std::istream &operator >>(std::istream &in, Letter &l)
+    std::ostream &operator <<(std::ostream &out, const Letter &l)
     {
-        std::cout << "Name Surname City Age Colour Wishlist:\n";
-        in >> l.name >> l.surname >> l.city >> l.colour;
-        l.wishlist.clear();
+        out << l.name << "," << l.surname << "," << l.city << "," << l.age << "," << l.colour << ",";
 
-        for(int i = 0; i < 50; i++)
+        for(int i = 0; i < l.wishlist.size() - 1; i++)
         {
-            std::string item;
-
-            in >> item;
-
-            if(item == "x") return in;
-            else
-            {
-                l.wishlist.push_back(item);
-            }
+            out << l.wishlist.at(i) << ",";
         }
+        out << l.wishlist.at(l.wishlist.size() - 1) << "\n";
 
-        return in;
+        return out;
     }
 
     class Present : public Child
@@ -170,6 +173,8 @@ namespace data // used in case of overloaded functionality and for marking items
 
         public:
             Present(std::string new_name, std::string new_surname, std::string new_city, int new_age);
+
+            ~Present();
 
             std::string getColour() { return this->colour; }
             std::vector<std::string> getItems() { return this->items; }
@@ -187,6 +192,11 @@ namespace data // used in case of overloaded functionality and for marking items
     {
         this->colour = "";
         this->cost = 0.0;
+    }
+
+    Present::~Present()
+    {
+        this->items.clear();
     }
 
     void Present::addToItems(Toy new_item)
@@ -228,13 +238,20 @@ namespace data // used in case of overloaded functionality and for marking items
             CityNode *path;
 
             CityNode(std::string new_name, double new_distance);
+
+            ~CityNode();
     };
 
-    CityNode::CityNode(std::string new_name = "", double new_distance = 0)
+    CityNode::CityNode(std::string new_name = "", double new_distance = 0.0)
     {
         this->name = new_name;
         this->distance = new_distance;
         this->path = nullptr;
+    }
+
+    CityNode::~CityNode()
+    {
+        delete this->path;
     }
 
     class RoadGraph
@@ -244,21 +261,19 @@ namespace data // used in case of overloaded functionality and for marking items
             RoadGraph(std::vector<std::string> new_start);
 
         public:
-            int num_of_cities;
             std::vector<CityNode *> starting_city;
-            std::vector<bool> isVisited;
 
             static RoadGraph *makeRoads(std::vector<std::string> new_start);
 
             void addPath(std::string start, std::string stop, double length);
+
+            friend std::ostream &operator <<(std::ostream &out, const RoadGraph &r);
     };
 
     RoadGraph *RoadGraph::start = nullptr;
 
     RoadGraph::RoadGraph(std::vector<std::string> new_start)
     {
-        this->num_of_cities = new_start.size();
-
         for(int i = 0; i < new_start.size(); i++)
         {
             this->starting_city.push_back(new CityNode(new_start.at(i)));
@@ -289,5 +304,29 @@ namespace data // used in case of overloaded functionality and for marking items
         }
 
         aux->path = new CityNode(stop, length);
+    }
+
+    std::ostream &operator <<(std::ostream &out, const RoadGraph &r)
+    {
+        for(int i = 0; i < r.starting_city.size() - 1; i++)
+        {
+            out << r.starting_city.at(i)->name << ",";
+        }
+        out << r.starting_city.at(r.starting_city.size() - 1)->name << "\n";
+
+        for(int i = 0; i < r.starting_city.size(); i++)
+        {
+            CityNode *c = r.starting_city.at(i)->path;
+
+            while(c->path != nullptr)
+            {
+                out << c->distance << ",";
+                c = c->path;
+            }
+
+            out << c->distance << "\n";
+        }
+
+        return out;
     }
 }

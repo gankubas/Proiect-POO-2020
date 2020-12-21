@@ -29,6 +29,8 @@ namespace workers // used in case of overloaded functionality and for marking it
         public:
             Troll();
 
+            ~Troll();
+
             std::vector<data::Present> getPackagedGifts() { return this->packaged_gifts; }
             std::map<std::string, int> getPackages() { return this->packages; }
             int getUsedCoal() { return this->used_coal; }
@@ -46,6 +48,13 @@ namespace workers // used in case of overloaded functionality and for marking it
     {
         this->packages["blue"] = 0;
         this->packages["pink"] = 0;
+    }
+
+    Troll::~Troll()
+    {
+        this->packages.clear();
+        this->gifts.clear();
+        this->packaged_gifts.clear();
     }
 
     void Troll::addCoals()
@@ -102,6 +111,8 @@ namespace workers // used in case of overloaded functionality and for marking it
             void addCandies();
 
         public:
+            ~MsSanta();
+
             void setCoals(int coals) { this->num_of_coal = coals; }
             void setCandies(int candies) { this->num_of_candy = candies; }
             void setGifts(std::vector<data::Present> new_gifts) { this->gifts = new_gifts; }
@@ -110,6 +121,11 @@ namespace workers // used in case of overloaded functionality and for marking it
     };
 
     data::Toy MsSanta::candies("candy", INT_MAX, 1.0);
+
+    MsSanta::~MsSanta()
+    {
+        this->gifts.clear();
+    }
 
     void MsSanta::addCandies()
     {
