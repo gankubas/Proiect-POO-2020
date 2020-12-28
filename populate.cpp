@@ -221,6 +221,8 @@ std::vector<std::string> RandomGenerator::getRWishlist()
             new_wishlist.push_back(wish);
         }
     }
+    
+    std::random_shuffle(new_wishlist.begin(), new_wishlist.end());
 
     return new_wishlist;
 }

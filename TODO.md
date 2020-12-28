@@ -1,5 +1,5 @@
 # Functional:
-- [x] db of inventory, list, letters, cities
+- [ ] db of inventory, list, letters, cities
     - [x] populate list.dat, inventory.dat, letters.dat, cities.dat
         - [x] compiles, runs
             - [x] check file contents
@@ -12,47 +12,47 @@
                 - [x] ensure children have an associated city
             - [x] make letters and naughty list
                 - [x] ensure letters have an associated child
+            - [x] shuffle wishlist
     - [x] read from files to singleton database   
-    - [x] select optimal generations for default example
-- [ ] elf class
-    - [ ] make presents
-        - [ ] compare letters to naughty list
-        - [ ] compare wishlist to inventory
-            - [ ] greedy wishlist
-        - [ ] add default gifts
-    - [ ] send presents to troll
-    - [ ] send number of children to ms santa
-    - [ ] send cities to santa
-    - [ ] compiles, runs
-        - [ ] tested
-- [ ] print presents/child
-- [ ] troll class
+    - [ ] select optimal generations for default example
+- [x] elf class
+    - [x] make presents
+        - [x] compare letters to naughty list
+        - [x] compare wishlist to inventory
+        - [x] fill presents
+        - [x] add default gifts
+    - [x] send presents to troll
+    - [x] send number of candies to ms santa
+    - [x] send cities to santa
+    - [x] print presents/child
+    - [x] compiles, runs
+        - [x] tested
+- [x] troll class
     - [x] add coals
     - [x] send number of coals to ms santa
+    - [x] print boy & girl package
     - [x] compiles, runs
-        - [ ] tested
-- [ ] print boy & girl package
-- [ ] ms santa class
+        - [x] tested
+- [x] ms santa class
     - [x] get candy from elves
     - [x] get coals from trolls
-    - [x] make candy
     - [x] calculate extra budget
-    - [ ] get path from santa
-    - [ ] compiles, runs
-        - [ ] tested
-- [ ] print total sum
+    - [x] get path from santa
+    - [x] print total sum
+    - [x] compiles, runs
+        - [x] tested
 - [ ] santa class
-    - [ ] get cities from elves
+    - [x] get cities from elves
     - [ ] find shortest path
         - [ ] get weighted graph
             - [ ] in singleton database
         - [ ] travelling salesman algorithm
             - [ ] just brute force...
             - [ ] dynamic?
-    - [ ] send path to ms claus
+    - [x] send path to ms claus
+    - [ ] display path and length
     - [ ] compiles, runs
         - [ ] tested
-- [ ] display path and length
 
 # Various:
 - [ ] abstraction

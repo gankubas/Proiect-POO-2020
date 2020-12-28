@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <iterator>
-#include <algorithm> // for std::find_if
+#include <algorithm> // for std::find_if and std::random_shuffle (in populate.cpp)
 
 namespace data // used in case of overloaded functionality and for marking items from this header file
 {
@@ -22,7 +22,6 @@ namespace data // used in case of overloaded functionality and for marking items
             double getPrice() { return this->price; }
 
             void removeFromInventory();
-            double findItemCost(std::string item);
 
             friend class Present; // for adding names and prices
 
@@ -39,11 +38,6 @@ namespace data // used in case of overloaded functionality and for marking items
     void Toy::removeFromInventory()
     {
         this->amount--;
-    }
-
-    double Toy::findItemCost(std::string item)
-    {
-        return item == this->name ? this->price : -1.0;
     }
 
     std::ostream &operator <<(std::ostream &out, const Toy &t)
@@ -71,8 +65,8 @@ namespace data // used in case of overloaded functionality and for marking items
             void operator =(const Child &copy); // used by Child and Letter in ::populateLetters() in populate.cpp
 
             friend class DataComparator;
-            friend class Letter; // operator == requires acces to protected attributes of another Child
-                                    // unusre if child class has access to private members of parent-type objects
+            friend class Letter; // copy constructor & operator == require access to protected attributes of another Child
+            friend class Present; // copy constructor requires access to protected attributes of another Child
 
             friend std::ostream &operator <<(std::ostream &out, const Child &c);
     };
@@ -118,7 +112,9 @@ namespace data // used in case of overloaded functionality and for marking items
             void setWishlist(std::vector<std::string> new_wishlist) { this->wishlist = new_wishlist; }
             void setColour(std::string new_colour) { this->colour = new_colour; }
 
-            bool operator ==(const Child &c); // TODO remove if unused
+            bool operator ==(const Child &c);
+
+            friend class Present; // operator == requires access to protected attributes of another Letter
 
             friend std::ostream &operator <<(std::ostream &out, const Letter &l);
     };
@@ -135,6 +131,8 @@ namespace data // used in case of overloaded functionality and for marking items
         this->surname = copy.surname;
         this->city = copy.city;
         this->age = copy.age;
+        this->colour = "";
+        this->wishlist = {};
     }
 
     Letter::~Letter()
@@ -173,6 +171,7 @@ namespace data // used in case of overloaded functionality and for marking items
 
         public:
             Present(std::string new_name, std::string new_surname, std::string new_city, int new_age);
+            Present(const Child &copy);
 
             ~Present();
 
@@ -185,11 +184,24 @@ namespace data // used in case of overloaded functionality and for marking items
             void addToItems(Toy new_item);
 
             void operator =(const Present &copy); // used in workers::MsSanta::setGifts()
+            bool operator ==(const Letter &l);
+
+            friend std::ostream &operator <<(std::ostream &out, const Present &p);
     };
 
     Present::Present(std::string new_name = "", std::string new_surname = "", std::string new_city = "", int new_age = -1)
         : Child{new_name, new_surname, new_city, new_age}
     {
+        this->colour = "";
+        this->cost = 0.0;
+    }
+
+    Present::Present(const Child &copy)
+    {
+        this->name = copy.name;
+        this->surname = copy.surname;
+        this->city = copy.city;
+        this->age = copy.age;
         this->colour = "";
         this->cost = 0.0;
     }
@@ -216,7 +228,28 @@ namespace data // used in case of overloaded functionality and for marking items
         this->cost = copy.cost;
     }
 
-    class DataComparator // functor used by std::map when Child is key
+    bool Present::operator ==(const Letter &l)
+    {
+        if(this->name == l.name
+            && this->surname == l.surname
+            && this->city == l.city
+            && this->age == l.age) return true;
+        else return false;
+    }
+
+    std::ostream &operator <<(std::ostream &out, const Present &p)
+    {
+        out << "\n" << p.name << " " << p.surname << ", " << p.age << ", from " << p.city << " has received:\n";
+
+        for(Toy i : p.items)
+        {
+            out << i.getName() << "\n";
+        }
+
+        return out;
+    }
+
+    class DataComparator // functor used by std::map with Child as key
     {
         public:
             bool operator ()(const Child &c1, const Child &c2)
@@ -292,10 +325,11 @@ namespace data // used in case of overloaded functionality and for marking items
 
     void RoadGraph::addPath(std::string start, std::string stop, double length)
     {
-        std::vector<CityNode *>::iterator start_pos = std::find_if(this->starting_city.begin(), this->starting_city.end(), [&start](const CityNode *starter)
-                                                {
-                                                    return starter->name == start;
-                                                });
+        std::vector<CityNode *>::iterator start_pos = std::find_if(this->starting_city.begin(), this->starting_city.end(),
+                                                        [&start](const CityNode *starter)
+                                                        {
+                                                            return starter->name == start;
+                                                        });
 
         CityNode *aux = this->starting_city.at(start_pos - this->starting_city.begin());
         while(aux->path != nullptr)
