@@ -15,6 +15,7 @@
             - [x] shuffle wishlist
     - [x] read from files to singleton database   
     - [ ] select optimal generations for default example
+    - [ ] use <chrono> and <random> for random generation instead of C libraries
 - [x] elf class
     - [x] make presents
         - [x] compare letters to naughty list
@@ -41,18 +42,17 @@
     - [x] print total sum
     - [x] compiles, runs
         - [x] tested
-- [ ] santa class
+- [x] santa class
     - [x] get cities from elves
-    - [ ] find shortest path
-        - [ ] get weighted graph
-            - [ ] in singleton database
-        - [ ] travelling salesman algorithm
-            - [ ] just brute force...
-            - [ ] dynamic?
+    - [x] find shortest path
+        - [x] get weighted graph
+            - [x] in singleton database
+        - [x] travelling salesman algorithm
+            - [x] backtracking
     - [x] send path to ms claus
-    - [ ] display path and length
-    - [ ] compiles, runs
-        - [ ] tested
+    - [x] display path and length
+    - [x] compiles, runs
+        - [x] tested
 
 # Various:
 - [ ] abstraction

@@ -4,6 +4,7 @@
 #include <utility> // for std::pair
 #include <tuple>
 #include <climits> // for INT_MAX
+#include <iomanip> // for double-decimal printing
 #include "data.hpp" // also <iostream>, <string>, <vector>, <iterator>, <algorithm>
 
 namespace workers // used in case of overloaded functionality and for marking items from this header file
@@ -467,11 +468,105 @@ namespace workers // used in case of overloaded functionality and for marking it
     {
         private:
             data::RoadGraph *travel_data;
-            data::CityNode *route;
+            data::CityNode *optimal_route;
+            double min_length;
+            std::vector<bool> isVisited;
+            std::vector<std::vector<std::string>> paths;
+            int best_poz;
+            std::vector<std::string> temp; // used to remember current check in optimizeRoad(...)
 
         public:
-            data::CityNode *getRoute() { return this->route; }
+            Santa(data::RoadGraph *roads);
 
-            void setPath(data::RoadGraph *roads) { this->travel_data = roads; }
+            data::CityNode *getRoute();
+
+            void optimizeRoad(int visits, double cur_length, int *poz, std::string last);
+            void displayShortestRoad();
     };
+
+    Santa::Santa(data::RoadGraph *roads)
+    {
+        this->travel_data = roads;
+        this->min_length = 0.0;
+        this->best_poz = -1;
+
+        for(int i = 1; i <= this->travel_data->starting_city.size(); i++)
+        {
+            this->isVisited.push_back(false);
+        }
+    }
+
+    data::CityNode *Santa::getRoute()
+    {
+        data::CityNode *final_destination = new data::CityNode("Rovaniemi");
+        data::CityNode *aux = final_destination;
+
+        for(int i = 0; i < this->paths.at(this->best_poz).size(); i++)
+        {
+            std::string name = this->paths.at(this->best_poz).at(i);
+            aux->path = new data::CityNode(name, this->travel_data->getDistance(aux->name, name));
+
+            aux = aux->path;
+        }
+
+        return final_destination;
+    }
+
+    void Santa::optimizeRoad(int visits, double cur_length, int *poz, std::string last)
+    {
+        if(visits == this->isVisited.size() - 1)
+        {
+            // get new minimum length
+            if(this->min_length == 0.0)
+            {
+                this->min_length = cur_length;
+                this->best_poz = *poz;
+            }
+            else
+            {
+                this->min_length = std::min(this->min_length, cur_length);
+
+                if(this->min_length == cur_length)
+                {
+                    this->best_poz = *poz;
+                }
+            }
+
+            // prepare for next permutation
+            (*poz)++;
+            this->paths.push_back(temp);
+            return;
+        }
+
+        for(int i = 0; i < this->travel_data->starting_city.size() - 1; i++)
+        {
+            if(!isVisited.at(i))
+            {
+                // visit current node
+                std::string next = this->travel_data->starting_city.at(i)->name;
+                isVisited.at(i) = true;
+                temp.push_back(next);
+
+                // continue path
+                // incrementing in function call removes the need to deincrement after the call
+                this->optimizeRoad(visits + 1, cur_length + this->travel_data->getDistance(last, next), poz, next);
+
+                // forget visit for new paths
+                temp.pop_back();
+                isVisited.at(i) = false;
+            }
+        }
+    }
+
+    void Santa::displayShortestRoad()
+    {
+        std::cout << "Rovaniemi";
+
+        for(int i = 0; i < this->paths.at(this->best_poz).size(); i++)
+        {
+            std::cout << " -> " << this->paths.at(this->best_poz).at(i);
+        }
+
+        std::cout << std::fixed << std::setprecision(2) << "\nLength: " << this->min_length << "km";
+    }
 }

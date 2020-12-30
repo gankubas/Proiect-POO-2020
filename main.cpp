@@ -5,7 +5,7 @@ int main(void)
     workers::Elf buddy;
     workers::Troll krampus;
     workers::MsSanta jessica;
-    workers::Santa kris;
+    workers::Santa kris(buddy.getCities());
 
     try
     {
@@ -20,7 +20,9 @@ int main(void)
         jessica.setCoals(krampus.getUsedCoal());
         jessica.displayBudget();
 
-        kris.setPath(buddy.getCities());
+        int start = 0;
+        kris.optimizeRoad(0, 0, &start, "Rovaniemi");
+        kris.displayShortestRoad();
 
         jessica.setPath(kris.getRoute());
     }

@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <iterator>
-#include <algorithm> // for std::find_if and std::random_shuffle (in populate.cpp)
+#include <algorithm> // for std::find_if, std::random_shuffle (in populate.cpp) and std::min(in workers.hpp)
 
 namespace data // used in case of overloaded functionality and for marking items from this header file
 {
@@ -299,6 +299,7 @@ namespace data // used in case of overloaded functionality and for marking items
             static RoadGraph *makeRoads(std::vector<std::string> new_start);
 
             void addPath(std::string start, std::string stop, double length);
+            double getDistance(std::string start, std::string stop);
 
             friend std::ostream &operator <<(std::ostream &out, const RoadGraph &r);
     };
@@ -338,6 +339,23 @@ namespace data // used in case of overloaded functionality and for marking items
         }
 
         aux->path = new CityNode(stop, length);
+    }
+
+    double RoadGraph::getDistance(std::string start, std::string stop)
+    {
+        std::vector<CityNode *>::iterator start_pos = std::find_if(this->starting_city.begin(), this->starting_city.end(),
+                                                        [&start](const CityNode *starter)
+                                                        {
+                                                            return starter->name == start;
+                                                        });
+
+        CityNode *aux = this->starting_city.at(start_pos - this->starting_city.begin());
+        while(aux->name != stop)
+        {
+            aux = aux->path;
+        }
+
+        return aux->distance;
     }
 
     std::ostream &operator <<(std::ostream &out, const RoadGraph &r)

@@ -221,7 +221,7 @@ std::vector<std::string> RandomGenerator::getRWishlist()
             new_wishlist.push_back(wish);
         }
     }
-    
+
     std::random_shuffle(new_wishlist.begin(), new_wishlist.end());
 
     return new_wishlist;
@@ -269,10 +269,7 @@ void RandomGenerator::getRCity()
     {
         for(int j = 0; j < count; j++)
         {
-            if(i != j)
-            {
-                this->generated_roadgraph->addPath(city_names.at(i), city_names.at(j), city_distances.at(i).at(j));
-            }
+            this->generated_roadgraph->addPath(city_names.at(i), city_names.at(j), city_distances.at(i).at(j));
         }
 
         if(i != count)
