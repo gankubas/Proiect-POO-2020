@@ -201,7 +201,7 @@ namespace workers // used in case of overloaded functionality and for marking it
             std::vector<data::Present> gifts;
 
         public:
-            template <class class_t>
+            template <class class_t> // used with data::Present and data::Letter to find naughtiness of child
             std::map<data::Child, std::string>::iterator getChildFromList(class_t item);
 
             void fillPresents();
@@ -245,6 +245,7 @@ namespace workers // used in case of overloaded functionality and for marking it
             {
                 double budget, cost = 0.00;
                 std::map<data::Child, std::string>::iterator child_in_list = this->getChildFromList(i);
+                std::vector<std::string> gift_wish = i.getWishlist();
 
                 if(child_in_list->second == "naughty")
                 {
@@ -255,7 +256,6 @@ namespace workers // used in case of overloaded functionality and for marking it
                     budget = 100.00;
                 }
 
-                std::vector<std::string> gift_wish = i.getWishlist();
                 data::Present new_gift(child_in_list->first);
 
                 for(std::string j : gift_wish)
@@ -306,6 +306,7 @@ namespace workers // used in case of overloaded functionality and for marking it
             std::vector<data::Letter>::iterator child_from_mail;
             std::string status, gender;
 
+            // could be implemented in Elf::getChildFromList() ?
             child_from_mail = std::find_if(this->fulldb->received_mail.begin(), this->fulldb->received_mail.end(),
                                 [&i](const data::Letter mail)
                                 {
@@ -355,7 +356,6 @@ namespace workers // used in case of overloaded functionality and for marking it
             ~Troll();
 
             std::vector<data::Present> getPackagedGifts() { return this->packaged_gifts; }
-            std::map<std::string, int> getPackages() { return this->packages; }
             int getUsedCoal() { return this->used_coal; }
 
             void setGifts(std::vector<std::tuple<data::Present, std::string, std::string>> new_gifts) { this->gifts = new_gifts; }
@@ -467,12 +467,12 @@ namespace workers // used in case of overloaded functionality and for marking it
     class Santa
     {
         private:
-            data::RoadGraph *travel_data;
-            data::CityNode *optimal_route;
-            double min_length;
-            std::vector<bool> isVisited;
-            std::vector<std::vector<std::string>> paths;
-            int best_poz;
+            data::RoadGraph *travel_data; // all cities to vosot and distances between them
+            data::CityNode *optimal_route; // final route to send to workers::MsSanta
+            double min_length; // shortest path
+            std::vector<bool> isVisited; // used for DFT traversal in optimizeRoad(...)
+            std::vector<std::vector<std::string>> paths; // remembers all possible paths
+            int best_poz; // remembers which path is the best
             std::vector<std::string> temp; // used to remember current check in optimizeRoad(...)
 
         public:
@@ -514,6 +514,7 @@ namespace workers // used in case of overloaded functionality and for marking it
 
     void Santa::optimizeRoad(int visits, double cur_length, int *poz, std::string last)
     {
+        // exit recursive loop
         if(visits == this->isVisited.size() - 1)
         {
             // get new minimum length
@@ -567,6 +568,6 @@ namespace workers // used in case of overloaded functionality and for marking it
             std::cout << " -> " << this->paths.at(this->best_poz).at(i);
         }
 
-        std::cout << std::fixed << std::setprecision(2) << "\nLength: " << this->min_length << "km";
+        std::cout << std::fixed << std::setprecision(2) << "\nLength: " << this->min_length << "km\n";
     }
 }

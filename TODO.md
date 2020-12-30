@@ -1,5 +1,5 @@
-# Functional:
-- [ ] db of inventory, list, letters, cities
+# ~~Functional:~~
+- [x] db of inventory, list, letters, cities
     - [x] populate list.dat, inventory.dat, letters.dat, cities.dat
         - [x] compiles, runs
             - [x] check file contents
@@ -14,8 +14,8 @@
                 - [x] ensure letters have an associated child
             - [x] shuffle wishlist
     - [x] read from files to singleton database   
-    - [ ] select optimal generations for default example
-    - [ ] use <chrono> and <random> for random generation instead of C libraries
+    - [x] select optimal generations for default example
+    - [x] use <chrono> and <random> for random generation instead of C libraries
 - [x] elf class
     - [x] make presents
         - [x] compare letters to naughty list
@@ -54,12 +54,10 @@
     - [x] compiles, runs
         - [x] tested
 
-# Various:
-- [ ] abstraction
-- [ ] mark class, object, constructor, destructor, encapsulation, inheritance, polymorphism, abstraction, template, exception
-- [ ] add comments
-- [ ] define coding style
-- [ ] remove useless getters
+# ~~Various:~~
+- [x] add comments
+- [x] define coding style
+- [x] remove useless getters
 - [x] separate files
     - [x] Data
     - [x] Workers

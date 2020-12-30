@@ -57,10 +57,7 @@ namespace data // used in case of overloaded functionality and for marking items
         public:
             Child(std::string new_name, std::string new_surname, std::string new_city, int new_age);
 
-            std::string getName() { return this->name; }
-            std::string getSurname() { return this->surname; }
-            std::string getCity() { return this->city; }
-            int getAge() { return this->age; }
+            std::string getName() { return this->name; };
 
             void operator =(const Child &copy); // used by Child and Letter in ::populateLetters() in populate.cpp
 
@@ -112,7 +109,7 @@ namespace data // used in case of overloaded functionality and for marking items
             void setWishlist(std::vector<std::string> new_wishlist) { this->wishlist = new_wishlist; }
             void setColour(std::string new_colour) { this->colour = new_colour; }
 
-            bool operator ==(const Child &c);
+            bool operator ==(const Child &c); // used by workers::Elf::getChildFromList()
 
             friend class Present; // operator == requires access to protected attributes of another Letter
 
@@ -183,8 +180,8 @@ namespace data // used in case of overloaded functionality and for marking items
 
             void addToItems(Toy new_item);
 
-            void operator =(const Present &copy); // used in workers::MsSanta::setGifts()
-            bool operator ==(const Letter &l);
+            void operator =(const Present &copy); // used by workers::MsSanta::setGifts()
+            bool operator ==(const Letter &l); // used by workers::Elf::getChildFromList()
 
             friend std::ostream &operator <<(std::ostream &out, const Present &p);
     };

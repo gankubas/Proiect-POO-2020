@@ -1,14 +1,14 @@
 category,inventory
-Toy Car,Action Figure,Teddy Bear,Lego(TM),Play-Doh(TM),Doll,Matryoshka,Toy Robot,D&D Book,Nerf(TM),Jigsaw Puzzle,Rubik's Cube,Yo-Yo,Book,Clothes,Sweets,Video Game
-60.13,5.21,8.00,98.98,10.00,6.15,3.86,74.03,49.99,35.73,42.51,4.25,1.75,15.94,83.43,12.08,60.00
+Toy Car,Action Figure,Teddy Bear,Lego(TM),Play-Doh(TM),Doll,Matryoshka,Toy Robot,D&D Book,Nerf(TM),Jigsaw Puzzle,Rubik's Cube,Yo-Yo,Book,Clothes,Sweets,Video Game,Watch,Bike,School Supplies
+60.13,5.21,8.00,98.98,10.00,6.15,3.86,74.03,49.99,35.73,42.51,4.25,1.75,15.94,83.43,12.08,60.00,55.99,99.99,10.00
 category,wishlist
-Toy Car,Action Figure,Teddy Bear,Lego(TM),Play-Doh(TM),Doll,Matryoshka,Toy Robot,Model Plane,Model Train,D&D Book,Nerf(TM),Jigsaw Puzzle,Rubik's Cube,Yo-Yo,PS5,XBox Series X,Nintendo Switch(TM),Book,Laptop,Mobile Phone,Clothes,Sweets
+Toy Car,Action Figure,Teddy Bear,Lego(TM),Play-Doh(TM),Doll,Matryoshka,Toy Robot,D&D Book,Nerf(TM),Jigsaw Puzzle,Rubik's Cube,Yo-Yo,Book,Clothes,Sweets,Video Game,Watch,Bike,School Supplies,Model Plane,Model Train,XBox Series X,Nintendo Switch(TM),PS5,Laptop,Mobile Phone,Little Brother/Sister
 category,boyname
-Angel,Cesar,Domingo,Oscar,Martin,Nico,Alonso,Juan,Manuel,Lucas,David,Carlos,Julio,Jesus,Pablo,Antonio
+Angel,Cesar,Domingo,Oscar,Martin,Nico,Alonso,Juan,Manuel,Lucas,David,Carlos,Julio,Jesus,Pablo,Antonio,Benito,Paul,Hector,Jeronimo,Matias,Pedro,Sergio,Victor,Ramon,Marco,Guillermo
 category,girlname
-Nuria,Maria,Ana,Lucia,Sandra,Juanita,Martina,Paula,Esperanza,Olivia,Yolanda,Alessandra,Jimena,Luna,Camila,Elisa
+Nuria,Maria,Ana,Lucia,Sandra,Juanita,Martina,Paula,Esperanza,Olivia,Yolanda,Alessandra,Amaya,Luna,Camila,Elisa,Nina,Sofia,Mia,Ximena,Hermosa,Lola,Cristina,Alba,Valeria,Patricia
 category,surname
-Belda,Lacasa,Cespedes,Ciceron,Velazquez,Carballo,Lopez,Villacres,Leguizamo,Saez,Espinar,Seco,Davalos,Campos,Tejedor,Alcocer,Maroto,Cortez,Aleman,Ocampo,Pomar,Tamayo,Fonseca
+Belda,Lacasa,Cespedes,Ciceron,Velazquez,Carballo,Lopez,Villacres,Leguizamo,Saez,Espinar,Seco,Davalos,Campos,Tejedor,Alcocer,Maroto,Cortez,Aleman,Ocampo,Pomar,Tamayo,Fonseca,Reyes,Gonzalez,Cambeiro,Rodriguez,Japon,Escribano,Espiga,Martinez,Sancho,Aparicio,Galvez,Vera,Franco,Manzanedo,Costa,Arboledo,Garrido,Quesada
 category,city
 Ciudad de Mexico,Ecatepec,Guadalajara,Puebla de Zaragoza,Tijuana,Ciudad Juarez,Leon,Zapopan,Monterrey,Nezahualcoyotl
 0.00,26.25,461.23,107.28,2301.74,1552.93,325.50,467.15,704.29,32.74

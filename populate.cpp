@@ -1,13 +1,15 @@
 #include <fstream>
 #include <sstream>
-#include <cstdlib> // for std::srand(), std::rand()
-#include <ctime> // for time(NULL) seeding
+#include <random>
+#include <chrono> // for time-based seed
 #include ".\include\data.hpp" // also <iostream>, <string>, <vector>, <iterator>, <algorithm>
 
 template <typename type_t>
-type_t getRandomElement(std::vector<type_t> collection) // returns a random element from a vector
+type_t getRandomElement(std::vector<type_t> collection, std::default_random_engine gen) // returns a random element from a vector
 {
-    return collection.at(std::rand() % collection.size());
+    std::uniform_int_distribution<int> random(0, collection.size() - 1);
+
+    return collection.at(random(gen));
 }
 
 class RandomGenerator
@@ -29,6 +31,7 @@ class RandomGenerator
         RandomGenerator();
 
     public:
+        static std::default_random_engine rng; // same seeded engine during the same run
         data::RoadGraph *generated_roadgraph;
         std::vector<data::Child> generated_children;
 
@@ -43,6 +46,9 @@ class RandomGenerator
 };
 
 RandomGenerator *RandomGenerator::rg = nullptr;
+
+// random engine using current time as seed
+std::default_random_engine RandomGenerator::rng (std::chrono::system_clock::now().time_since_epoch().count());
 
 RandomGenerator::RandomGenerator()
 {
@@ -195,13 +201,15 @@ RandomGenerator *RandomGenerator::getGenerator()
 std::vector<data::Toy> RandomGenerator::getRInventory()
 {
     std::vector<data::Toy> new_inventory;
+    std::uniform_int_distribution<int> random1(0, 19);
+    std::uniform_int_distribution<int> random2(1, 6);
 
     for(int i = 0; i < this->inventory_gifts.size(); i++)
     {
-        if(std::rand() % 20) // 5% chance of item from database to be missing from inventory
+        if(random1(this->rng)) // 5% chance of item from database to be missing from inventory
         {
             // add 1-6 toys to inventory
-            data::Toy temp(this->inventory_gifts.at(i), std::rand() % 6 + 1, this->inventory_prices.at(i));
+            data::Toy temp(this->inventory_gifts.at(i), random2(this->rng), this->inventory_prices.at(i));
 
             new_inventory.push_back(temp);
         }
@@ -213,15 +221,17 @@ std::vector<data::Toy> RandomGenerator::getRInventory()
 std::vector<std::string> RandomGenerator::getRWishlist()
 {
     std::vector<std::string> new_wishlist;
+    std::uniform_int_distribution<int> random(0, 3);
 
     for(std::string wish : this->wishlist_gifts)
     {
-        if(!(std::rand() % 4)) // 25% chance of item to be in wishlist
+        if(!random(this->rng)) // 25% chance of item to be in wishlist
         {
             new_wishlist.push_back(wish);
         }
     }
 
+    // shuffle the wishlist because first wishes have priority when presents are made
     std::random_shuffle(new_wishlist.begin(), new_wishlist.end());
 
     return new_wishlist;
@@ -232,13 +242,15 @@ void RandomGenerator::getRCity()
     std::vector<std::string> city_names;
     std::vector<int> positions;
     int count = 0;
+    std::uniform_int_distribution<int> random(0, 2);
 
     while(count < 4) // at least 4 cities
     {
         for(int i = 0; i < this->mexican_cities.size(); i++)
         {
+            // make sure no duplicate cities are added
             bool isSeen = std::find(positions.begin(), positions.end(), i) != positions.end();
-            if(!(std::rand() % 3) && !isSeen) // 33% chance of city being in the final list
+            if(!random(this->rng) && !isSeen) // 33% chance of city being in the final list
             {
                 city_names.push_back(this->mexican_cities.at(i));
                 positions.push_back(i);
@@ -285,6 +297,8 @@ std::vector<data::Child> RandomGenerator::getRChild()
     {
         std::vector<std::string> visited_cities;
         std::vector<std::string> cities_to_visit; // no children in starting city
+        std::uniform_int_distribution<int> random1(0, 1);
+        std::uniform_int_distribution<int> random2(4, 14);
 
         for(data::CityNode *i : this->generated_roadgraph->starting_city)
         {
@@ -297,34 +311,28 @@ std::vector<data::Child> RandomGenerator::getRChild()
         while(visited_cities.size() != cities_to_visit.size()) // at least 1 child/city
         {
             for(int i = 0; i < 5; i++) // otherwise last city to be added is guaranteed to only have 1 child
-                                        // also generates the minimum of 5 children
+                                            // also generates the minimum of 5 children regardless of the number of cities
             {
                 std::string name;
 
-                if(std::rand() % 2) // 50% chance of boy/girl
+                if(random1(this->rng)) // 50% chance of boy/girl
                 {
-                    name = getRandomElement(this->boy_names);
+                    name = getRandomElement(this->boy_names, this->rng);
                 }
                 else
                 {
-                    name = getRandomElement(this->girl_names);
+                    name = getRandomElement(this->girl_names, this->rng);
                 }
 
-                std::string surname = getRandomElement(this->children_surnames);
-                std::string city = getRandomElement(cities_to_visit);
-
-                // while(city == "Rovaniemi")
-                // {
-                //     city = getRandomElement(this->generated_roadgraph->starting_city)->name;
-                // }
-                    // doesn't work? while becomes infinite
+                std::string surname = getRandomElement(this->children_surnames, this->rng);
+                std::string city = getRandomElement(cities_to_visit, this->rng);
 
                 if(std::find(visited_cities.begin(), visited_cities.end(), city) == visited_cities.end())
                 {
                     visited_cities.push_back(city);
                 }
 
-                int age = std::rand() % 10 + 4; // kids between 4-14 y.o.
+                int age = random2(this->rng); // kids between 4-14 y.o.
 
                 this->generated_children.push_back(data::Child(name, surname, city, age));
             }
@@ -377,10 +385,11 @@ void populateList(RandomGenerator *gen)
 
         std::vector<data::Child> children = gen->getRChild();
         std::vector<std::string> naughtiness;
+        std::uniform_int_distribution<int> random(0, 9);
 
         for(int i = 0; i < children.size(); i++)
         {
-            if(!(std::rand() % 10)) // 10% of children are naughty
+            if(!random(gen->rng)) // 10% of children are naughty
             {
                 naughtiness.push_back("naughty");
             }
@@ -487,8 +496,6 @@ void populateLetters(RandomGenerator *gen)
 
 int main()
 {
-    std::srand(time(NULL));
-
     try
     {
         RandomGenerator *randgen = RandomGenerator::getGenerator();

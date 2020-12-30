@@ -8,3 +8,9 @@
 * implemented and unimplemented features after initial commit provided in TODO.md
 * due to use of "\\" instead of "/" in file management all .cpp files are only guaranteed to work on Windows
 * tested on multiple predetermined and manually calculated sets of data
+
+### Coding style
+* namespaces\t-flatcase
+* classes\t-PascalCase
+* functions\t-camelCase
+* variables\t-snake_case
