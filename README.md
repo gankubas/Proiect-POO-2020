@@ -10,7 +10,7 @@
 * tested on multiple predetermined and manually calculated sets of data
 
 ### Coding style
-* namespaces\t-flatcase
-* classes\t-PascalCase
-* functions\t-camelCase
-* variables\t-snake_case
+* namespaces    -flatcase
+* classes       -PascalCase
+* functions     -camelCase
+* variables     -snake_case
